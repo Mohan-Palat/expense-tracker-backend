@@ -13,6 +13,9 @@ expense = Blueprint('expenses', 'expense')
 def get_all_expenses():
     try:
         expenses = [model_to_dict(expense) for expense in models.Expense.select()]
+        # how to put a where clause in SQL
+        # expenses = [model_to_dict(expense) for expense in models.Expense.select().where(models.Expense.exp_date > '2020-12-10')]
+        # expenses = [model_to_dict(expense) for expense in models.Expense.select(fn.SUM(models.Expense.exp_amt))]
         print(expenses)
         return jsonify(data=expenses, status={"code": 200, "message": "Success"})
     except models.DoesNotExist:
@@ -28,3 +31,18 @@ def create_expenses():
     print(model_to_dict(expense), 'model to dict')
     expense_dict = model_to_dict(expense)
     return jsonify(data=expense_dict, status={"code": 201, "message": "Success"})
+
+# UPDATE route
+@expense.route('/<id>', methods=["PUT"])
+def update_song(id):
+    payload = request.get_json()
+    query = models.Expense.update(**payload).where(models.Expense.id==id)
+    query.execute()
+    return jsonify(data=model_to_dict(models.Expense.get_by_id(id)), status={"code": 200, "message": "resource updated successfully"})
+
+# DELETE route
+@expense.route('/<id>', methods=["Delete"])
+def delete_expense(id):
+    query = models.Expense.delete().where(models.Expense.id==id)
+    query.execute()
+    return jsonify(data='resource successfully deleted', status={"code": 200, "message": "resource deleted successfully"})
