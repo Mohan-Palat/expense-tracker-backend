@@ -12,7 +12,7 @@ expense = Blueprint('expenses', 'expense')
 @expense.route('/', methods=["GET"])
 def get_all_expenses():
     try:
-        expenses = [model_to_dict(expense) for expense in models.Expense.select()]
+        expenses = [model_to_dict(expense) for expense in models.Expense.select().order_by(models.Expense.exp_date.desc())]
         # how to put a where clause in SQL
         # expenses = [model_to_dict(expense) for expense in models.Expense.select().where(models.Expense.exp_date > '2020-12-10')]
         # expenses = [model_to_dict(expense) for expense in models.Expense.select(fn.SUM(models.Expense.exp_amt))]

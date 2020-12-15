@@ -8,7 +8,9 @@ class Expense(Model):
     exp_date = DateField()
     exp_descr = CharField()
     exp_amt = IntegerField()
-    exp_comment = CharField()
+    # exp_amt = DecimalField(13,2)
+    exp_category = CharField()
+    # exp_comment = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
