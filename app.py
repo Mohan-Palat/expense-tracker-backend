@@ -2,6 +2,7 @@ from flask import Flask, jsonify, g
 from flask_cors import CORS
 
 from resources.expenses import expense
+from resources.categories import category
 
 import models
 
@@ -27,9 +28,11 @@ def after_request(response):
 
 
 CORS(expense, origins=['http://localhost:3000'], supports_credentials=True) 
+CORS(category, origins=['http://localhost:3000'], supports_credentials=True) 
 
 
 app.register_blueprint(expense, url_prefix='/api/v1/expenses') 
+app.register_blueprint(category, url_prefix='/api/v1/categories') 
 
 # The default URL ends in / ("my-website.com/").
 @app.route('/')
